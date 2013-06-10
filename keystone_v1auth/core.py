@@ -176,10 +176,14 @@ class V1Auth(Application):
         # All done!
         return Response(
             request=req,
+            status="204 NO CONTENT",
             headers={
                 'x-auth-token': token_id,
                 'x-storage-token': token_id,
                 'x-storage-url': storage_url,
+                'X-Server-Management-Url': "None", # for libcloud
+                'X-CDN-Management-Url': "None", # for libcloud
+
             })
 
 def app_factory(global_conf, **local_conf):
