@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from keystone import catalog
-from keystone import identity
-from keystone import token
+import keystone.catalog
+import keystone.identity
+import keystone.token
 from keystone.common.wsgi import Application, Request
 
 from webob import Response
@@ -31,9 +31,10 @@ LOG = logging.getLogger(__name__)
 class V1Auth(Application):
 
     def __init__(self, conf):
-        self.catalog_api = catalog.Manager()
-        self.identity_api = identity.Manager()
-        self.token_api = token.Manager()
+        # use .driver, as
+        self.catalog_api = keystone.catalog.Manager().driver
+        self.identity_api = keystone.identity.Manager().driver
+        self.token_api = keystone.token.Manager().driver
 
         super(V1Auth, self).__init__()
 
@@ -174,8 +175,8 @@ class V1Auth(Application):
         return Response(
             request=req,
             headers={
-                'x-auth-token': token,
-                'x-storage-token': token,
+                'x-auth-token': token_id,
+                'x-storage-token': token_id,
                 'x-storage-url': storage_url,
             })
 
