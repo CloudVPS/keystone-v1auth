@@ -36,6 +36,8 @@ class V1Auth(Application):
         self.identity_api = keystone.identity.Manager().driver
         self.token_api = keystone.token.Manager().driver
 
+        self.conf = conf
+
         super(V1Auth, self).__init__()
 
     def __call__(self, environment, start_response):
